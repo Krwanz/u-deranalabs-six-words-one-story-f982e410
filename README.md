@@ -19,5 +19,6 @@ reader to fill in.
 
 `main.ts` (Node 22) writes the story to `/output/entry.txt`
 (`MAKEFUN_OUTPUT_DIR` when the grader sets it). The text is exactly six
-words and 47 characters, no trailing newline, so it passes the gate
-(UTF-8, 1–60 characters) as written.
+words and 49 characters, no trailing newline, so it passes the gate
+(UTF-8, 1–60 characters) as written — and the program itself checks the
+word count and length before writing, failing loudly if either is off.
