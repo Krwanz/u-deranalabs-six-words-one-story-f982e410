@@ -1,20 +1,29 @@
-// Six Words, One Story — u-deranalabs-six-words-one-story-f982e410
-// The whole entry is one six-word story. This program writes it to
-// /output/entry.txt (MAKEFUN_OUTPUT_DIR when the grader sets it).
 import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
 
-const STORY = "Grandmother's recipe, still warm, no grandmother.";
+// Six-word story, revised: a stronger turn — grief, identity, and
+// something left unsaid. The twin is gone, yet the narrator answers.
+const story = "My twin died; I still answer.";
 
-// Guard the gate: the entry must be exactly six words, 1–60 chars.
-const words = STORY.trim().split(/\s+/);
-if (words.length !== 6) {
-  throw new Error(`story must be exactly six words, got ${words.length}`);
+function validate(text: string): void {
+  const words = text.trim().split(/\s+/);
+  if (words.length !== 6) {
+    throw new Error(`expected exactly 6 words, got ${words.length}`);
+  }
+  if (text.length < 1 || text.length > 60) {
+    throw new Error("entry must be 1-60 characters");
+  }
+  if (!text.trim()) {
+    throw new Error("entry must not be only whitespace");
+  }
+  if (text !== text.trim()) {
+    throw new Error("entry must have no leading or trailing whitespace");
+  }
+  if (/[\r\n]/.test(text)) {
+    throw new Error("entry must be a single line");
+  }
 }
-if (STORY.length < 1 || STORY.length > 60) {
-  throw new Error(`story must be 1–60 characters, got ${STORY.length}`);
-}
 
-const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
-mkdirSync(outDir, { recursive: true });
-writeFileSync(join(outDir, "entry.txt"), STORY, "utf8");
+mkdirSync("/output", { recursive: true });
+validate(story);
+writeFileSync("/output/entry.txt", story, "utf8");
+console.log(`wrote ${story.length} chars, ${story.trim().split(/\s+/).length} words`);
